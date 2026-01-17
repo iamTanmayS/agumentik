@@ -11,9 +11,17 @@ const orderRoutes = require('./src/routes/orderRoutes');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: '*' }
+  cors: {
+    origin: [
+      "http://localhost:3000",
+      "https://YOUR-VERCEL-DOMAIN.vercel.app",
+      "exp://*",          // Expo dev
+      "http://*",         // Android emulator
+    ],
+    methods: ["GET", "POST"],
+  },
+  transports: ["websocket"],
 });
-
 connectDB();
 
 app.use(cors({

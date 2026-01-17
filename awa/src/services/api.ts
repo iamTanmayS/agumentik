@@ -1,5 +1,5 @@
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://agumentik-0t7m.onrender.com/api';
 
 export const register = async (username: string, password: string, role: string = 'user') => {
   try {
