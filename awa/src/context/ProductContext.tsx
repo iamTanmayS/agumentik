@@ -1,33 +1,25 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { getProducts } from "../services/api";
+import { io } from "socket.io-client";
 
 const ProductContext = createContext<any>(null);
+const socket = io('http://localhost:3000');
 
 export const ProductProvider = ({ children }: any) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchProducts = async () => {
-    try {
-      const data = await getProducts();
-      setProducts(data);
-    } catch (err) {
-      console.error("Failed to fetch products", err);
-    }
-  };
-
   useEffect(() => {
-    
-    fetchProducts().finally(() => setLoading(false));
+    getProducts().then(setProducts).finally(() => setLoading(false));
 
-    
-    const interval = setInterval(() => {
-      fetchProducts();
-    }, 1000);
+    socket.on('stockUpdate', (updatedProducts) => {
+      setProducts(updatedProducts);
+    });
 
-   
-    return () => clearInterval(interval);
+    return () => {
+      socket.off('stockUpdate');
+    };
   }, []);
 
   return (

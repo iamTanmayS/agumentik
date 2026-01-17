@@ -37,6 +37,8 @@ exports.createOrder = async (req, res) => {
       totalAmount
     });
 
+    req.io.emit('stockUpdate', await Product.find());
+
     res.status(201).json(order);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -7,11 +7,11 @@ const seedProducts = async () => {
     await mongoose.connect(config.MONGODB_URI);
     console.log('Database connected');
 
-    // Clear existing products
+    
     await Product.deleteMany({});
     console.log('Cleared existing products');
 
-    // Add sample products
+    
     const sampleProducts = [
       {
         name: 'Laptop',
